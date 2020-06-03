@@ -6,12 +6,15 @@
  */
 
 import React, { FC } from "react";
+import Toolbar from "../Toolbar/Toolbar";
+import { layout } from "./layout.module.scss";
 
 const Layout: FC = ({ children }) => {
     return (
-        <>
+        <div className={layout}>
+            <Toolbar />
             <main>{children}</main>
-        </>
+        </div>
     );
 };
 
