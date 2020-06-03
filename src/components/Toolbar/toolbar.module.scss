@@ -1,4 +1,12 @@
 .toolbar {
     flex: 1;
     display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.toolbar > * {
+    margin-right: 20px;
 }
