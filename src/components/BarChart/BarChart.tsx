@@ -3,9 +3,11 @@ import D3BarChart from "../../charts/BarChart";
 import Margin from "../../charts/utils/Margin";
 import ReactResizeDetector from "react-resize-detector";
 
-interface BarChartProps {}
+interface BarChartProps {
+    dataset?: number[];
+}
 
-const BarChart: FC<BarChartProps> = () => {
+const BarChart: FC<BarChartProps> = ({ dataset = [] }) => {
     const svg = useRef();
     const barChart = useRef<D3BarChart>();
     const [width, setWidth] = useState(0);
@@ -17,20 +19,9 @@ const BarChart: FC<BarChartProps> = () => {
         if (!barChart.current) barChart.current = new D3BarChart(svg.current);
 
         barChart.current
-            .setData([
-                {
-                    label: "a",
-                    value: 20,
-                },
-                {
-                    label: "b",
-                    value: 100,
-                },
-                {
-                    label: "c",
-                    value: 10,
-                },
-            ])
+            .setData(
+                dataset.map((value, index) => ({ label: `${index}`, value }))
+            )
             .setSize(width, height)
             .setMargin(new Margin(50, 30, 30, 30))
             .render();
