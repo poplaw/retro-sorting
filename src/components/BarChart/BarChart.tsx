@@ -25,7 +25,7 @@ const BarChart: FC<BarChartProps> = ({ dataset = [] }) => {
             .setSize(width, height)
             .setMargin(new Margin(50, 30, 30, 30))
             .render();
-    }, [svg.current, width, height]);
+    }, [svg.current, width, height, dataset]);
 
     return (
         <ReactResizeDetector handleWidth handleHeight>
