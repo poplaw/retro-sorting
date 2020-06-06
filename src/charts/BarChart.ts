@@ -34,9 +34,6 @@ export default class BarChart {
     }
 
     private updateXAxis(): BarChart {
-        this.xAxis
-            .attr("transform", `translate(0, ${this.height})`)
-            .call(d3.axisBottom(this.xScale));
         return this;
     }
 
