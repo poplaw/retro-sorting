@@ -10,10 +10,12 @@ import * as d3 from "d3";
 import SteppedSortingService from "../../services/SteppedSortingService";
 import InsertionSort from "../../services/sorting/InsertionSort";
 import MergeSort from "../../services/sorting/MergeSort";
+import { getCurrentAlgorithm } from "../../features/currentAlgorithm/currentAlgorithmSlice";
 
 const Toolbar: FC = () => {
     const dispatch = useDispatch();
     const dataset = useSelector(getDataset);
+    const currentAlgorithm = useSelector(getCurrentAlgorithm);
 
     const [isOpen, setIsOpen] = useState(false);
     const [isAlgOpen, setIsAlgOpen] = useState(true);
@@ -39,6 +41,7 @@ const Toolbar: FC = () => {
                         })
                 }
             />
+            <span className="nes-text is-primary">{currentAlgorithm}</span>
             <Button variant={"is-primary"} onClick={() => setIsAlgOpen(true)}>
                 Algorithm
             </Button>

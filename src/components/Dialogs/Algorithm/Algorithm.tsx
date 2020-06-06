@@ -2,6 +2,8 @@ import React, { FC } from "react";
 import Modal from "react-modal";
 import SortingFactory from "../../../services/sorting/SortingFactory";
 import SortingStrategy from "../../../services/sorting/SortingStrategy";
+import { useDispatch } from "react-redux";
+import { currentAlgorithmSlice } from "../../../features/currentAlgorithm/currentAlgorithmSlice";
 
 interface DatasetDialogProps {
     isOpen: boolean;
@@ -16,6 +18,8 @@ const AlgorithmDialog: FC<DatasetDialogProps> = ({
     onClose,
     onSelectStrategy,
 }) => {
+    const dispatch = useDispatch();
+
     return (
         <Modal
             isOpen={isOpen}
@@ -40,6 +44,11 @@ const AlgorithmDialog: FC<DatasetDialogProps> = ({
                         className="nes-btn is-primary"
                         key={index}
                         onClick={() => {
+                            dispatch(
+                                currentAlgorithmSlice.actions.update(
+                                    element.getName()
+                                )
+                            );
                             onSelectStrategy(element);
                             onClose();
                         }}
