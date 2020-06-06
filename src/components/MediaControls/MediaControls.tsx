@@ -32,7 +32,7 @@ const MediaControls: FC<MediaControlsProps> = ({
     return (
         <div className={container}>
             <Button
-                variant={"is-primary"}
+                variant={isPlaying ? "is-primary" : "is-error"}
                 onClick={e => {
                     setIsPaused(false);
                     setIsPlaying(false);
@@ -42,14 +42,14 @@ const MediaControls: FC<MediaControlsProps> = ({
                 ▮
             </Button>
             <Button
-                variant={"is-primary"}
+                variant={isPlaying ? "is-success" : "is-primary"}
                 onClick={e => {
                     setIsPlaying(true);
                     setIsPaused(!isPausedState);
                     onPlayPauseClick && onPlayPauseClick(e);
                 }}
             >
-                {isPausedState ? "||" : "▶"}
+                {/* {isPausedState ? "||" : "▶"} */}▶
             </Button>
         </div>
     );

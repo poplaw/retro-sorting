@@ -1,5 +1,8 @@
 import SortingStrategy from "./sorting/SortingStrategy";
 import SortingStrategyNullObject from "./sorting/SortingStrategyNullObject";
+import { Dispatch } from "react";
+import { RootState } from "../features";
+import { commonSlice } from "../features/common/commonSlice";
 
 export default class SteppedSortingService {
     comparisons: number;
@@ -9,9 +12,11 @@ export default class SteppedSortingService {
     private onStepDone: (numbers: number[]) => void;
     private isRunning: boolean;
     private isPaused: boolean;
+    private dispatcher: Dispatch<any>;
 
-    constructor(private readonly delay: number) {
+    constructor(private readonly delay: number, dispatcher: Dispatch<any>) {
         this.strategy = new SortingStrategyNullObject();
+        this.dispatcher = dispatcher;
     }
 
     setSortingStrategy(strategy: SortingStrategy): SteppedSortingService {
@@ -19,22 +24,27 @@ export default class SteppedSortingService {
         return this;
     }
 
+    private setIsRunning(isRunning: boolean): void {
+        this.isRunning = isRunning;
+        this.dispatcher(commonSlice.actions.setIsSorting(isRunning));
+    }
+
     stop(): void {
-        this.isRunning = false;
+        this.setIsRunning(false);
     }
 
     async start(numbers: number[]): Promise<void> {
         if (this.isRunning) {
-            this.isPaused = !this.isPaused;
+            return;
         }
 
         this.comparisons = 0;
         this.arrayAccesses = 0;
         this.iterations = 0;
-        this.isRunning = true;
+        this.setIsRunning(true);
         this.isPaused = false;
         await this.strategy.sort(numbers);
-        this.isRunning = false;
+        this.stop();
     }
 
     setOnStepDone(func: (numbers: []) => void): SteppedSortingService {

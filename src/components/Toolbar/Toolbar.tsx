@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from "react";
+import React, { FC, useRef, useState, useEffect } from "react";
 import { toolbar } from "./toolbar.module.scss";
 import Button from "../Button";
 import MediaControls from "../MediaControls/MediaControls";
@@ -11,17 +11,20 @@ import SteppedSortingService from "../../services/SteppedSortingService";
 import InsertionSort from "../../services/sorting/InsertionSort";
 import MergeSort from "../../services/sorting/MergeSort";
 import { getCurrentAlgorithm } from "../../features/currentAlgorithm/currentAlgorithmSlice";
+import { isSorting } from "../../features/common/commonSlice";
 
 const Toolbar: FC = () => {
     const dispatch = useDispatch();
     const dataset = useSelector(getDataset);
     const currentAlgorithm = useSelector(getCurrentAlgorithm);
+    const isSortingNow = useSelector(isSorting);
 
     const [isOpen, setIsOpen] = useState(false);
     const [isAlgOpen, setIsAlgOpen] = useState(false);
 
     const service = useRef<SteppedSortingService>();
-    if (!service.current) service.current = new SteppedSortingService(16);
+    if (!service.current)
+        service.current = new SteppedSortingService(16, dispatch);
 
     return (
         <nav className={toolbar}>
@@ -62,6 +65,7 @@ const Toolbar: FC = () => {
                 Shuffle
             </Button>
             <MediaControls
+                isPlaying={isSortingNow}
                 onStopClick={() => {
                     service.current.stop();
                 }}
