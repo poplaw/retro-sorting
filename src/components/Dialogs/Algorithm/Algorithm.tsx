@@ -16,8 +16,6 @@ const AlgorithmDialog: FC<DatasetDialogProps> = ({
     onClose,
     onSelectStrategy,
 }) => {
-    const iterator = sortingFactory.getAvailableStrategies();
-
     return (
         <Modal
             isOpen={isOpen}
