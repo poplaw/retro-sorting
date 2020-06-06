@@ -101,10 +101,12 @@ export default class BarChart {
 
         selectionWithBoundData
             .merge(enter)
-            .attr("x", d => this.xScale(d.label))
             .attr("width", this.xScale.bandwidth())
             .attr("y", d => this.yScale(d.value))
-            .attr("height", d => this.height - this.yScale(d.value));
+            .attr("height", d => this.height - this.yScale(d.value))
+            .transition()
+            .duration(100)
+            .attr("x", d => this.xScale(d.label));
         return this;
     }
 }
