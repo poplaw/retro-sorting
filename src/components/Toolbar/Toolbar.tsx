@@ -18,7 +18,7 @@ const Toolbar: FC = () => {
     const currentAlgorithm = useSelector(getCurrentAlgorithm);
 
     const [isOpen, setIsOpen] = useState(false);
-    const [isAlgOpen, setIsAlgOpen] = useState(true);
+    const [isAlgOpen, setIsAlgOpen] = useState(false);
 
     const service = useRef<SteppedSortingService>();
     if (!service.current) service.current = new SteppedSortingService(16);
