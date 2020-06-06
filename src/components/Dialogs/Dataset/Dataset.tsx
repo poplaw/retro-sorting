@@ -30,7 +30,7 @@ const generateRandomData = (
 const GeneratedDataset: FC = () => {
     const [minValue, setMinValue] = useState<number>(0);
     const [maxValue, setMaxValue] = useState<number>(1000);
-    const [datasetSize, setDatasetSize] = useState<number>(5);
+    const [datasetSize, setDatasetSize] = useState<number>(100);
     const dispatch = useDispatch();
 
     return (
