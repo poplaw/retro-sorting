@@ -5,4 +5,5 @@ export default interface SortingStrategy {
     setSteppedSortingService: (
         service: SteppedSortingService
     ) => SortingStrategy;
+    getName(): string;
 }

@@ -8,4 +8,7 @@ export default class SortingStrategyNullObject implements SortingStrategy {
     setSteppedSortingService(service: SteppedSortingService): SortingStrategy {
         return new SortingStrategyNullObject();
     }
+    getName(): string {
+        return "";
+    }
 }

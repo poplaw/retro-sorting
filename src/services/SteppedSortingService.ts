@@ -52,10 +52,10 @@ export default class SteppedSortingService {
 
     async notifyStepDone(numbers: number[]): Promise<boolean> {
         ++this.iterations;
+        this.onStepDone(numbers);
         await new Promise(resolve => {
             setTimeout(resolve, this.delay);
         });
-        this.onStepDone(numbers);
         return this.isRunning;
     }
 }

@@ -3,14 +3,15 @@ import SteppedSortingService from "../SteppedSortingService";
 
 export default class MergeSort implements SortingStrategy {
     private service: SteppedSortingService;
+    private toBeCancelled: boolean;
 
     async sort(array: number[]): Promise<void> {
+        this.toBeCancelled = false;
         await this.mergeSort(array, 0, array.length - 1);
     }
 
     async mergeSort(array: number[], l: number, r: number): Promise<void> {
         if (l < r) {
-            if (!(await this.service.notifyStepDone(array.slice()))) return;
             const m = Math.floor((l + r) / 2);
 
             await this.mergeSort(array, l, m);
@@ -26,13 +27,15 @@ export default class MergeSort implements SortingStrategy {
         m: number,
         r: number
     ): Promise<void> {
+        if (this.toBeCancelled) {
+            return;
+        }
+
         const n1 = m - l + 1;
         const n2 = r - m;
 
-        // console.log(`[${n1}, ${n2}]`);
-
-        let left: number[] = [];
-        let right: number[] = [];
+        const left: number[] = [];
+        const right: number[] = [];
 
         for (let i = 0; i < n1; ++i) {
             left[i] = array[l + i];
@@ -41,9 +44,6 @@ export default class MergeSort implements SortingStrategy {
         for (let i = 0; i < n2; ++i) {
             right[i] = array[m + 1 + i];
         }
-
-        // left.map((element, index) => array[l + index]);
-        // right.map((element, index) => array[m + 1 + index]);
 
         let i = 0,
             j = 0;
@@ -72,10 +72,21 @@ export default class MergeSort implements SortingStrategy {
             ++j;
             ++k;
         }
+
+        const isRunning = await this.service.notifyStepDone(array.slice());
+
+        if (!isRunning) {
+            this.toBeCancelled = true;
+            return;
+        }
     }
 
     setSteppedSortingService(service: SteppedSortingService): SortingStrategy {
         this.service = service;
         return this;
+    }
+
+    getName(): string {
+        return "Merge sort";
     }
 }

@@ -12,15 +12,25 @@ export default class InsertionSort implements SortingStrategy {
             while (currentIndex > 0 && temp < array[currentIndex - 1]) {
                 array[currentIndex] = array[currentIndex - 1];
                 --currentIndex;
+                const isRunning = await this.service.notifyStepDone(
+                    array.slice()
+                );
+
+                if (!isRunning) {
+                    return;
+                }
             }
 
             array[currentIndex] = temp;
-            if (!(await this.service.notifyStepDone(array))) return;
         }
     }
 
     setSteppedSortingService(service: SteppedSortingService): SortingStrategy {
         this.service = service;
         return this;
+    }
+
+    getName(): string {
+        return "Insertion sort";
     }
 }

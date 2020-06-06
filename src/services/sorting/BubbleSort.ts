@@ -17,7 +17,13 @@ export default class BubbleSort implements SortingStrategy {
                     array[j + 1] = swap;
                 }
 
-                if (await !this.service.notifyStepDone(array.slice())) return;
+                const isRunning = await this.service.notifyStepDone(
+                    array.slice()
+                );
+
+                if (!isRunning) {
+                    return;
+                }
             }
         }
     }
@@ -25,5 +31,9 @@ export default class BubbleSort implements SortingStrategy {
     setSteppedSortingService(service: SteppedSortingService): SortingStrategy {
         this.service = service;
         return this;
+    }
+
+    getName(): string {
+        return "Bubble sort";
     }
 }

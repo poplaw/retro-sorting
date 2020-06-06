@@ -7,20 +7,24 @@ export default class SelectionSort implements SortingStrategy {
 
     async sort(array: number[]): Promise<void> {
         let i = 0;
+        this.toBeCancelled = false;
         while (i < array.length) {
-            const mini = this.indexOfMin(array, i);
+            console.log(this.toBeCancelled);
+            if (this.toBeCancelled) {
+                return;
+            }
+
+            const mini = await this.indexOfMin(array, i);
 
             const temp = array[i];
             array[i] = array[mini];
             array[mini] = temp;
 
             ++i;
-
-            if (await !this.service.notifyStepDone(array.slice())) return;
         }
     }
 
-    indexOfMin(array: number[], index: number): number {
+    async indexOfMin(array: number[], index: number): Promise<number> {
         let min = array[index];
         let minIndex = index;
 
@@ -28,6 +32,13 @@ export default class SelectionSort implements SortingStrategy {
             if (array[i] < min) {
                 min = array[i];
                 minIndex = i;
+            }
+
+            const isRunning = await this.service.notifyStepDone(array.slice());
+
+            if (!isRunning) {
+                this.toBeCancelled = true;
+                return;
             }
         }
 
@@ -37,5 +48,9 @@ export default class SelectionSort implements SortingStrategy {
     setSteppedSortingService(service: SteppedSortingService): SortingStrategy {
         this.service = service;
         return this;
+    }
+
+    getName(): string {
+        return "Selection sort";
     }
 }
